@@ -33,6 +33,7 @@
                 if response.data:
                     license_info = response.data[0]
                     expiry_date_str = license_info.get('expiry_date')
+                    
                     expiry_date = datetime.datetime.strptime(expiry_date_str, '%Y-%m-%d').date()
                     
                     if datetime.date.today() <= expiry_date:
@@ -46,7 +47,7 @@
                         }).encode())
                     else:
                         # Lisensi kedaluwarsa
-                        self.send_response(200) # Tetap kirim 200 OK, tapi dengan status valid: false
+                        self.send_response(200)
                         self.send_header('Content-type', 'application/json')
                         self.end_headers()
                         self.wfile.write(json.dumps({
@@ -55,7 +56,7 @@
                         }).encode())
                 else:
                     # Kunci tidak ditemukan
-                    self.send_response(200) # Tetap kirim 200 OK, tapi dengan status valid: false
+                    self.send_response(200)
                     self.send_header('Content-type', 'application/json')
                     self.end_headers()
                     self.wfile.write(json.dumps({"valid": False, "message": "Kunci lisensi tidak valid."}).encode())
